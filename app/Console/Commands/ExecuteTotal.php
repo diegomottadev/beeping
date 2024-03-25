@@ -43,7 +43,6 @@ class ExecuteTotal extends Command
 
         //No se especifica que ordenes ya se ejecutaron en el challege considero que todas ordenes
 
- 
         $totalOrders = Order::count();
         // Llamar al endpoint /api/executed/create
         $response = $this->call('POST', '/api/executed/create', ['total_cost' => $totalCost, 'total_orders' => $totalOrders]);

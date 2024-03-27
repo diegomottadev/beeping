@@ -23,6 +23,11 @@ Ensure you execute these commands within the project directory and have Docker i
 
     docker exec -it beeping-app php artisan schedule:run
 
+Verify this message after running 'schedule:run'
+
+    Running ['artisan' execute:total] ............ 13,607ms DONE
+      ⇂ '/usr/local/bin/php' 'artisan' execute:total > '/dev/null' 2>&1  
+
 ### Check if the scheduler is running by executing the following command in a different terminal window:
 
     docker exec -it beeping-app php artisan schedule:list

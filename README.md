@@ -30,3 +30,5 @@ Ensure you execute these commands within the project directory and have Docker i
 ### Execute the endpoint test by running the following command:
 
     docker exec -it beeping-app php artisan test --filter ExecutedControllerTest
+
+### Access localhost:82 in your browser to view the list of orders.

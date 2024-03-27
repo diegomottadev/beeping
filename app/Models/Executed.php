@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Executed extends Model
 {
     use HasFactory;
+    protected $table = 'executed'; // Especifica el nombre de la tabla
 
     protected $fillable = ['total_orders', 'total_cost'];
 }

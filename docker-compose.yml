@@ -10,6 +10,7 @@ services:
         working_dir: /var/www/beeping
         volumes:
             - .:/var/www/beeping
+        # command: sh -c "composer install --ignore-platform-reqs && php artisan key:generate && php artisan horizon:install"
         networks:
             - app-network
     nginx:
@@ -26,7 +27,6 @@ services:
             - app-network
     mysql:
         image: mysql:5.7.22
-        #image: mariadb:10.3
         container_name: beeping-mysql
         restart: unless-stopped
         tty: true
@@ -34,14 +34,13 @@ services:
             - "3308:3306"
         environment:
             MYSQL_ROOT_PASSWORD: root
-            MYSQL_DATABASE: beeping
+            MYSQL_DATABASE: memotest
             MYSQL_USER: root
             MYSQL_PASSWORD: root
             SERVICE_TAGS: dev
             SERVICE_NAME: mysql
         volumes:
             - dbdata:/var/lib/mysql/
-#            - ./mysql/my.cnf:/etc/mysql/my.cnf
         networks:
             - app-network
     redis:

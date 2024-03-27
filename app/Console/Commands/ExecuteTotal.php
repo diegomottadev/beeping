@@ -3,11 +3,12 @@
 namespace App\Console\Commands;
 
 use App\Jobs\CalculateTotalCostJob;
-use App\Models\Executed;
 use App\Models\Order;
 use App\Models\OrderLine;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ExecuteTotal extends Command
 {
@@ -30,24 +31,25 @@ class ExecuteTotal extends Command
      */
     public function handle()
     {
+            // Calcular el costo total de todos los pedidos
+            $totalCost = OrderLine::with('product')->get()->sum(function ($orderLine) {
+                return $orderLine->qty * $orderLine->product->cost;
+            });
 
-       /*
-        Calcular de forma asíncrona el coste total de todos los pedidos de la DB. 
-        Para calcular este coste hay que multiplicar cada order_line “qty” por el “product cost” (colocar un nombre a la queue). 
-        Una vez sumados todos los pedidos guardar el resultado en la tabla executed pegando al endpoint /api/executed/create
-        */
+            // No se especifica qué órdenes ya se ejecutaron en el desafío; consideraremos que todas las órdenes
 
-        // Calcular el costo total de todos los pedidos
-        $totalCost = OrderLine::with('product')->get()->sum(function ($orderLine) {
-            return $orderLine->qty * $orderLine->product->cost;
-        });
+            $totalOrders = Order::count();
 
-        //No se especifica que ordenes ya se ejecutaron en el challege considero que todas ordenes
+            Bus::chain([
+                new CalculateTotalCostJob($totalCost, $totalOrders),
+            ])->catch(function (Throwable $e) {
+               \Log::error('Command and job failed: ' . $e->getMessage());
+            })->dispatch();
 
-        $totalOrders = Order::count();
+            $this->info('Total cost calculation enqueued successfully.');
 
-        CalculateTotalCostJob::dispatch($totalCost,$totalOrders)->onQueue('total-queue');
+            // Log de éxito
+            \Log::info('Command executed and job dispatched successfully.');
 
-        $this->info('Total cost calculation enqueued successfully.');
     }
 }

@@ -1,1 +1,5 @@
 composer require laravel/horizon --ignore-platform-reqs
+composer require predis/predis:^2.0 --ignore-platform-reqs
+
+docker pull redis
+docker run --name redis-beeping -d -p 6379:6379 redis

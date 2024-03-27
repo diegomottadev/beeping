@@ -1,0 +1,60 @@
+version: "3.9"
+services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: beeping-app
+        restart: unless-stopped
+        tty: true
+        working_dir: /var/www/beeping
+        volumes:
+            - .:/var/www/beeping
+        networks:
+            - app-network
+    nginx:
+        image: nginx:latest
+        restart: unless-stopped
+        container_name: beeping-nginx
+        tty: true
+        ports:
+            - "82:80"
+        volumes:
+            - .:/var/www/beeping
+            - ./_docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - app-network
+    mysql:
+        image: mysql:5.7.22
+        #image: mariadb:10.3
+        container_name: beeping-mysql
+        restart: unless-stopped
+        tty: true
+        ports:
+            - "3308:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: beeping
+            MYSQL_USER: root
+            MYSQL_PASSWORD: root
+            SERVICE_TAGS: dev
+            SERVICE_NAME: mysql
+        volumes:
+            - dbdata:/var/lib/mysql/
+#            - ./mysql/my.cnf:/etc/mysql/my.cnf
+        networks:
+            - app-network
+    redis:
+        image: redis:latest
+        container_name: beeping-redis
+        restart: unless-stopped
+        ports:
+            - "6379:6379"
+        networks:
+            - app-network
+networks:
+    app-network:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local

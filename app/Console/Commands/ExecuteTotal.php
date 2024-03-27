@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Jobs\CalculateTotalCostJob;
 use App\Models\Executed;
 use App\Models\Order;
 use App\Models\OrderLine;
@@ -44,9 +45,9 @@ class ExecuteTotal extends Command
         //No se especifica que ordenes ya se ejecutaron en el challege considero que todas ordenes
 
         $totalOrders = Order::count();
-        // Llamar al endpoint /api/executed/create
-        $response = $this->call('POST', '/api/executed/create', ['total_cost' => $totalCost, 'total_orders' => $totalOrders]);
 
-        $this->info('Total cost calculated and saved successfully.');
+        CalculateTotalCostJob::dispatch($totalCost,$totalOrders)->onQueue('total-queue');
+
+        $this->info('Total cost calculation enqueued successfully.');
     }
 }

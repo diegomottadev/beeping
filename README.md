@@ -1,10 +1,11 @@
 # Project Overview
-This project aims to provide a platform for managing and tracking orders. It includes features for storing order data, calculating total costs, and monitoring order execution status. The application utilizes Laravel, a popular PHP framework, and integrates Docker for easy deployment and management of the development environment.
+This project aims to provide a platform for managing and tracking orders. It includes features for storing order data, calculating total costs, and monitoring order execution status. The application utilizes Laravel, and integrates Docker for easy deployment and management of the development environment.
 
-Ensure you execute these commands within the project directory and have Docker installed and properly configured on your system. Following these instructions will help set up the environment and run the project effectively. If you encounter any issues, refer to the project documentation or seek assistance from the development team.
+Ensure you execute these commands within the project directory and have Docker installed and properly configured on your system. Following these instructions will help set up the environment and run the project effectively.
 
-## Instructions for Execution
-Follow these steps to set up and run the project:
+# Instructions for Execution
+
+## Follow these steps to set up and run the project:
 
 ### Run the following commands in your terminal:
     docker compose -up -d

@@ -1,5 +1,5 @@
 # Project Overview
-This project aims to provide a platform for managing and tracking orders. It includes features for storing order data, calculating total costs, and monitoring order execution status. The application utilizes Laravel, and integrates Docker for easy deployment and management of the development environment.
+This project is aimed at solving a code challenge using Laravel, jobs, commands, and Redis. It includes features for storing order data, calculating total costs, and monitoring order execution status with Horizon. The application integrates Docker for easy deployment and management of the development environment.
 
 Ensure you execute these commands within the project directory and have Docker installed and properly configured on your system. Following these instructions will help set up the environment and run the project effectively.
 
@@ -18,6 +18,10 @@ Ensure you execute these commands within the project directory and have Docker i
 ### Execute the following command in a separate terminal window to run Horizon:
 
     docker exec -it beeping-app php artisan horizon
+    
+Verify this message after
+      
+      INFO  Horizon started successfully.
 
 ### Run the following command in another terminal window to execute the scheduler:
 

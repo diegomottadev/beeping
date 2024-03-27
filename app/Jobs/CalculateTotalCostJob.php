@@ -19,6 +19,7 @@ class CalculateTotalCostJob implements ShouldQueue
 
     public function __construct($totalCost,$totalOrders)
     {
+        // Initialize job with total cost and total orders
         $this->totalCost = $totalCost;
         $this->totalOrders = $totalOrders;
     }
@@ -28,23 +29,23 @@ class CalculateTotalCostJob implements ShouldQueue
      */
     public function handle()
     {
-       try{ // Guarda el resultado en la tabla "executed"
-            // Envía una solicitud HTTP al endpoint /api/executed/create
-            // Puedes usar Guzzle HTTP Client u otro método para enviar la solicitud
-            // Aquí un ejemplo utilizando Guzzle:
-            \Log::info('Job before to execute.');
+        try {
+
+            // Send an HTTP request to the /api/executed/create endpoint
+            \Log::info('Job before execution.');
 
             $params = [
                 'total_cost' => $this->totalCost,
                 'total_orders' => $this->totalOrders
             ];
             
+            // Post request to create executed record
             $response = Http::post('http://beeping-nginx/api/executed/create', $params);
 
             \Log::info('Job executed successfully.');
 
         } catch (\Exception $e) {
-            // Log de error
+            // Log any errors that occur during job execution
             \Log::error('Job failed: ' . $e->getMessage());
         }
     }

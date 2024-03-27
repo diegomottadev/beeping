@@ -31,25 +31,29 @@ class ExecuteTotal extends Command
      */
     public function handle()
     {
-            // Calcular el costo total de todos los pedidos
-            $totalCost = OrderLine::with('product')->get()->sum(function ($orderLine) {
-                return $orderLine->qty * $orderLine->product->cost;
-            });
+        // Calculate the total cost of all orders
+        $totalCost = OrderLine::with('product')->get()->sum(function ($orderLine) {
+            return $orderLine->qty * $orderLine->product->cost;
+        });
 
-            // No se especifica qué órdenes ya se ejecutaron en el desafío; consideraremos que todas las órdenes
+        // It's not specified which orders are already executed in the challenge; we'll consider all orders
 
-            $totalOrders = Order::count();
+        // Count total number of orders
+        $totalOrders = Order::count();
 
-            Bus::chain([
-                new CalculateTotalCostJob($totalCost, $totalOrders),
-            ])->catch(function (Throwable $e) {
-               \Log::error('Command and job failed: ' . $e->getMessage());
-            })->dispatch();
+        // Dispatch a job to calculate the total cost in a queued chain
+        Bus::chain([
+            new CalculateTotalCostJob($totalCost, $totalOrders),
+        ])->catch(function (Throwable $e) {
+           // Log any errors that occur during job execution
+           \Log::error('Command and job failed: ' . $e->getMessage());
+        })->dispatch();
 
-            $this->info('Total cost calculation enqueued successfully.');
+        // Output success message to console
+        $this->info('Total cost calculation enqueued successfully.');
 
-            // Log de éxito
-            \Log::info('Command executed and job dispatched successfully.');
+        // Log success
+        \Log::info('Command executed and job dispatched successfully.');
 
     }
 }

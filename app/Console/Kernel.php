@@ -12,7 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Run the 'execute:total' command every two minutes
         $schedule->command('execute:total')->everyTwoMinutes();
     }
 

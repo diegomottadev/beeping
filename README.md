@@ -8,7 +8,7 @@ Ensure you execute these commands within the project directory and have Docker i
 ## Follow these steps to set up and run the project:
 
 ### Run the following commands in your terminal:
-    docker compose -up -d
+    docker compose up -d
     docker exec -it beeping-app php artisan optimize
     docker exec -it beeping-app php artisan key:generate
     docker exec -it beeping-app php artisan migrate
